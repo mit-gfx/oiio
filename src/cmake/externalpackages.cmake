@@ -273,7 +273,7 @@ if (USE_FIELD3D)
         # N.B. For a custom version, the caller had better set up the
         # variables HDF5_INCLUDE_DIRS and HDF5_LIBRARIES.
     else ()
-        find_package (HDF5 COMPONENTS CXX)
+        find_package (HDF5)
         set (HDF5_LIBRARIES ${HDF5_LIBRARIES_RELEASE})
         # The above line forces use of the release version of HDF5
         # libraries; even when we compile OIIO in debug mode, we don't
