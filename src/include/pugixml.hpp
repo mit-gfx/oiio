@@ -34,13 +34,18 @@ namespace std
 	template <class _charT, class _Traits> class basic_istream;
 	template <class _charT, class _Traits> class basic_ostream;
 	template <class _charT, class _Traits, class _Allocator> class basic_string;
-#else
+#else 
+#ifdef __APPLE__
+#include <Availability.h>
+#endif
+#if !defined(__APPLE__) || __MAC_OS_X_VERSION_MIN_REQUIRED < 1090
 	// Borland C++ compiler has a bug which forces template argument names in forward declarations to be the same as in actual definitions
 	template <class _Ty> class allocator;
 	template <class _Ty> struct char_traits;
 	template <class _Elem, class _Traits> class basic_istream;
 	template <class _Elem, class _Traits> class basic_ostream;
 	template <class _Elem, class _Traits, class _Ax> class basic_string;
+#endif
 #endif
 
 	// Digital Mars compiler has a bug which requires a forward declaration for explicit instantiation (otherwise type selection is messed up later, producing link errors)
@@ -252,14 +257,14 @@ namespace pugi
 	{
 	public:
         // Construct writer from an output stream object
-		xml_writer_stream(std::basic_ostream<char, std::char_traits<char> >& stream);
-		xml_writer_stream(std::basic_ostream<wchar_t, std::char_traits<wchar_t> >& stream);
+		xml_writer_stream(std::basic_ostream<char>& stream);
+		xml_writer_stream(std::basic_ostream<wchar_t>& stream);
 
 		virtual void write(const void* data, size_t size);
 
 	private:
-		std::basic_ostream<char, std::char_traits<char> >* narrow_stream;
-		std::basic_ostream<wchar_t, std::char_traits<wchar_t> >* wide_stream;
+		std::basic_ostream<char>* narrow_stream;
+		std::basic_ostream<wchar_t>* wide_stream;
 	};
 	#endif
 
@@ -537,8 +542,8 @@ namespace pugi
 
 	#ifndef PUGIXML_NO_STL
 		// Print subtree to stream
-		void print(std::basic_ostream<char, std::char_traits<char> >& os, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, xml_encoding encoding = encoding_auto, unsigned int depth = 0) const;
-		void print(std::basic_ostream<wchar_t, std::char_traits<wchar_t> >& os, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, unsigned int depth = 0) const;
+		void print(std::basic_ostream<char>& os, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, xml_encoding encoding = encoding_auto, unsigned int depth = 0) const;
+		void print(std::basic_ostream<wchar_t>& os, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, unsigned int depth = 0) const;
 	#endif
 
 		// Child nodes iterators
@@ -783,8 +788,8 @@ namespace pugi
 
 	#ifndef PUGIXML_NO_STL
 		// Save XML document to stream (semantics is slightly different from xml_node::print, see documentation for details).
-		void save(std::basic_ostream<char, std::char_traits<char> >& stream, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, xml_encoding encoding = encoding_auto) const;
-		void save(std::basic_ostream<wchar_t, std::char_traits<wchar_t> >& stream, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default) const;
+		void save(std::basic_ostream<char>& stream, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, xml_encoding encoding = encoding_auto) const;
+		void save(std::basic_ostream<wchar_t>& stream, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default) const;
 	#endif
 
 		// Save XML to file
